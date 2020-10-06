@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "177469847775",
+    "firebase_url": "https://michaelbarbershop6oct.firebaseio.com",
+    "project_id": "michaelbarbershop6oct",
+    "storage_bucket": "michaelbarbershop6oct.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:177469847775:android:08383bc391663bc9dd116a",
+        "android_client_info": {
+          "package_name": "com.example.michaelbarbershop6oct"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "177469847775-dis0778ho6cbfkineo0h95gvqjjct7jm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.michaelbarbershop6oct",
+            "certificate_hash": "50ec059a12835bcf242a5aede72323a555a4612c"
+          }
+        },
+        {
+          "client_id": "177469847775-1022k3vlbm81h07ad14qhepnnb3v1fhq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAU8ZHdB5bPB8uuM2EHFAp6WxB0rkzgia0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "177469847775-1022k3vlbm81h07ad14qhepnnb3v1fhq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
