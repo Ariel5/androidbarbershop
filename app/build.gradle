@@ -21,6 +21,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -36,6 +40,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.jakewharton:butterknife:10.2.3'
     implementation 'com.google.firebase:firebase-auth:16.0.5'
+    implementation 'com.karumi:dexter:6.2.1'
+    implementation 'com.google.firebase:firebase-messaging:20.3.0'
     annotationProcessor 'com.jakewharton:butterknife:10.2.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -44,4 +50,7 @@ dependencies {
     // Added by me
 //    ERROR: File google-services.json is missing. The Google Services Plugin cannot function without it.
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
+//    Needed for firebase auth (AuthUI object in classes)
+    implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
+//    Needed for extra nr of methods in classes
 }
