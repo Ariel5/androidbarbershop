@@ -238,9 +238,6 @@ public class BookingActivity extends AppCompatActivity {
     /**
      * remote IntentFilter
      * comment localBroadcast declare to find all position have working with localBroadcast
-     * @author Kim Yong dae
-     * @version 1.0.0
-     * @since 2019-06-29 오전 8:36
     **/
     private void confirmBooking() {
         Log.d(TAG, "confirmBooking: called!!");
@@ -252,12 +249,6 @@ public class BookingActivity extends AppCompatActivity {
         EventBus.getDefault().postSticky(new ConfirmBookingEvent(true));
     }
 
-    /**
-     * Event Bus
-     * @author Kim Yong dae
-     * @version 1.0.0
-     * @since 2019-06-29 오전 8:37
-    **/
     private void loadTimeSlotOfBarber(String barberId) {
         Log.d(TAG, "loadTimeSlotOfBarber: called!!");
         // Send Local Broadcast to Fragment step3
@@ -271,9 +262,6 @@ public class BookingActivity extends AppCompatActivity {
      * Because here we use
      * intent.putParcelableArrayListExtra(Common.KEY_BARBER_LOAD_DONE, barbers);
      * to send an List of Barber to other Fragment, so we need create Event Class with property is Barber list
-     * @author Kim Yong dae
-     * @version 1.0.0
-     * @since 2019-06-29 오전 8:39
     **/
     private void loadBarberBySalon(String salonId) {
         Log.d(TAG, "loadBarberBySalon: called!!");
@@ -347,10 +335,10 @@ public class BookingActivity extends AppCompatActivity {
         Log.d(TAG, "setupStepView: called");
 
         List<String> stepList = new ArrayList<>();
-        stepList.add("미용실");
-        stepList.add("미용사");
-        stepList.add("예약시간");
-        stepList.add("예약확인");
+        stepList.add("Salon");
+        stepList.add("Barber");
+        stepList.add("Reservation Time");
+        stepList.add("Confirm");
         stepView.setSteps(stepList);
     }
 }

@@ -118,7 +118,7 @@ public class BookingStep1Fragment extends Fragment implements IAllSalonLoadListe
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             List<String> list = new ArrayList<>();
-                            list.add("지역을 선택하세요.");
+                            list.add("Please select a location");
                             for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                                 list.add(documentSnapshot.getId());
                             }

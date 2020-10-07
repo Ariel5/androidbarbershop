@@ -16,6 +16,7 @@ public class MyViewPagerAdapter extends FragmentPagerAdapter {
         super(fm);
     }
 
+//    These steps represent 1. Choose Salon > 2. Choose Barber > 3. Choose time > 4. Confirm
     @Override
     public Fragment getItem(int position) {
         switch (position) {

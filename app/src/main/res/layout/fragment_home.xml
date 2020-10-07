@@ -9,7 +9,6 @@
     android:orientation="vertical"
     tools:context=".Fragments.HomeFragment">
 
-    <!-- 프로파일 -->
     <LinearLayout
         android:id="@+id/layout_user_information"
         android:orientation="horizontal"
@@ -53,13 +52,11 @@
 
     </LinearLayout>
 
-    <!-- 상단 UI -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- 메뉴 -->
         <LinearLayout
             android:weightSum="4"
             android:padding="8dp"
@@ -205,7 +202,6 @@
 
         </LinearLayout>
 
-        <!-- 예약내역 -->
         <androidx.cardview.widget.CardView
             android:id="@+id/card_booking_info"
             android:layout_marginStart="8dp"
@@ -355,7 +351,6 @@
 
     </LinearLayout>
 
-    <!-- 배너슬라이더 && 룩북 -->
     <LinearLayout
         android:padding="8dp"
         android:orientation="vertical"
