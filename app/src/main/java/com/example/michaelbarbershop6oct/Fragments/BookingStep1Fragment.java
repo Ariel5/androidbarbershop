@@ -79,7 +79,7 @@ public class BookingStep1Fragment extends Fragment implements IAllSalonLoadListe
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        allSalonRef = FirebaseFirestore.getInstance().collection("AllSalon");
+        allSalonRef = FirebaseFirestore.getInstance().collection("SalonLocations");
 
         iAllSalonLoadListener = this;
         iBranchLoadListener = this;
