@@ -173,7 +173,7 @@ public class BookingStep1Fragment extends Fragment implements IAllSalonLoadListe
         Common.city = cityName;
 
         branchRef = FirebaseFirestore.getInstance()
-                .collection("AllSalon")
+                .collection("SalonLocations")
                 .document(cityName)
                 .collection("Branch");
 
