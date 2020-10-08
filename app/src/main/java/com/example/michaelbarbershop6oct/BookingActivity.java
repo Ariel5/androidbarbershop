@@ -131,10 +131,6 @@ public class BookingActivity extends AppCompatActivity {
 ////        }
 ////    };
 
-    /**
-     * Event Bus
-     * @since : 2019-06-29 오전 9:11
-    **/
     //=============================================================================
     // EventBus start
 
@@ -273,7 +269,7 @@ public class BookingActivity extends AppCompatActivity {
         // /AllSalon/NewYork/Branch/2QkgoRWoPoH7KMlsAbVK/Barber
         if (!TextUtils.isEmpty(Common.city)) {
             barberRef = FirebaseFirestore.getInstance()
-                    .collection("AllSalon")
+                    .collection("SalonLocations")
                     .document(Common.city)
                     .collection("Branch")
                     .document(salonId)
