@@ -31,11 +31,6 @@ import butterknife.ButterKnife;
 import dmax.dialog.SpotsDialog;
 
 
-/**
- * @author Kim Yong dae
- * @version 1.0.0
- * @since 2019-06-29 오후 12:19
- **/
 public class HistoryActivity extends AppCompatActivity {
 
     @BindView(R.id.recycler_history)

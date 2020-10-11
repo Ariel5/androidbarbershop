@@ -1,12 +1,6 @@
 package com.example.michaelbarbershop6oct.Model.EventBus;
 
 
-/**
-* EventBus
-* @author Kim Yong dae
-* @version 1.0.0
-* @since 2019-06-29 오전 8:34
-**/
 public class ConfirmBookingEvent {
 
     private boolean isConfirm;
