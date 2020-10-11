@@ -153,7 +153,7 @@ public class HomeActivity extends AppCompatActivity {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragment)
-                    .commit();
+                    .commitAllowingStateLoss();
             return true;
         }
         return false;
