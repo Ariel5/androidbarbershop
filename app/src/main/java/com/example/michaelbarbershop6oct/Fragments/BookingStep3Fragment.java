@@ -125,7 +125,7 @@ public class BookingStep3Fragment extends Fragment implements ITimeSlotLoadListe
         mDialog.show();
 
         barberDoc = FirebaseFirestore.getInstance()
-                .collection("AllSalon")
+                .collection("SalonLocations")
                 .document(Common.city)
                 .collection("Branch")
                 .document(Common.currentSalon.getSalonId())
@@ -144,7 +144,7 @@ public class BookingStep3Fragment extends Fragment implements ITimeSlotLoadListe
                                 // Get information of booking
                                 // If not created, return empty;
                                 CollectionReference date = FirebaseFirestore.getInstance()
-                                        .collection("AllSalon")
+                                        .collection("SalonLocations")
                                         .document(Common.city)
                                         .collection("Branch")
                                         .document(Common.currentSalon.getSalonId())

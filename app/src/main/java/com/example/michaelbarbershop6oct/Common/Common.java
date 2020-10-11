@@ -191,7 +191,7 @@ public class Common {
         Log.d(TAG, "showRatingDialog: called!!");
         // First, we need get DocumentReference of Barber
         DocumentReference barberNeedRateRef = FirebaseFirestore.getInstance()
-                .collection("AllSalon")
+                .collection("SalonLocations")
                 .document(stateName)
                 .collection("Branch")
                 .document(salonID)

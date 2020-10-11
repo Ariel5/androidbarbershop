@@ -161,7 +161,7 @@ public class BookingStep4Fragment extends Fragment implements ICartItemLoadLiten
 
                                             // Submit Notification to 'Notifications' collection of Barber
                                             FirebaseFirestore.getInstance()
-                                                    .collection("AllSalon")
+                                                    .collection("SalonLocations")
                                                     .document(Common.city)
                                                     .collection("Branch")
                                                     .document(Common.currentSalon.getSalonId())
@@ -501,7 +501,7 @@ public class BookingStep4Fragment extends Fragment implements ICartItemLoadLiten
 
         // submit barber document
         DocumentReference bookingDate = FirebaseFirestore.getInstance()
-                .collection("AllSalon")
+                .collection("SalonLocations")
                 .document(Common.city)
                 .collection("Branch")
                 .document(Common.currentSalon.getSalonId())

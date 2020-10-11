@@ -172,7 +172,7 @@ public class HomeFragment extends Fragment
 
             // Get booking information in barber object
             DocumentReference barberBookingInfo = FirebaseFirestore.getInstance()
-                    .collection("AllSalon")
+                    .collection("SalonLocations")
                     .document(Common.currentBooking.getCityBook())
                     .collection("Branch")
                     .document(Common.currentBooking.getSalonId())
