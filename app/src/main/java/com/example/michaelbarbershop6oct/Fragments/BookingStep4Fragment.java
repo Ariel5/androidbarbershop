@@ -113,7 +113,7 @@ public class BookingStep4Fragment extends Fragment implements ICartItemLoadLiten
         mDialog.show();
 
         DatabaseUtils.getAllCart(CartDatabase.getInstance(getContext()), this);
-        mDialog.dismiss();
+//        mDialog.dismiss();
     }
 
     private void addToUserBooking(BookingInformation bookingInformation) {
@@ -176,6 +176,8 @@ public class BookingStep4Fragment extends Fragment implements ICartItemLoadLiten
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
+                                                            if (mDialog.isShowing())
+                                                                mDialog.dismiss();
                                                            // First, get Token base on Barber id
                                                             FirebaseFirestore.getInstance()
                                                                     .collection("Tokens")

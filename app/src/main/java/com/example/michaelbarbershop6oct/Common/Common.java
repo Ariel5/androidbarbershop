@@ -152,7 +152,7 @@ public class Common {
                     PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
-        String NOTIFICATION_CHANNEL_ID = "ydkim2110_barber_client_app";
+        String NOTIFICATION_CHANNEL_ID = "barber_client_app";
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
