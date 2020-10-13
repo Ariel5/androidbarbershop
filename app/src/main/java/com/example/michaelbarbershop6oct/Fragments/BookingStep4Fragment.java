@@ -113,6 +113,7 @@ public class BookingStep4Fragment extends Fragment implements ICartItemLoadLiten
         mDialog.show();
 
         DatabaseUtils.getAllCart(CartDatabase.getInstance(getContext()), this);
+        mDialog.dismiss();
     }
 
     private void addToUserBooking(BookingInformation bookingInformation) {
