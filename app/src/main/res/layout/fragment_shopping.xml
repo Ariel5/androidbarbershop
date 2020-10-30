@@ -63,6 +63,16 @@
             style="@style/Widget.MaterialComponents.Chip.Choice"
             />
 
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_recommendations"
+            android:text="Recommendations"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipBackgroundColor="@android:color/darker_gray"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            />
+
     </com.google.android.material.chip.ChipGroup>
 
     <View

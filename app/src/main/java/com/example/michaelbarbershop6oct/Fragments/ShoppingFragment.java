@@ -79,9 +79,63 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
         setSelectedChip(chip_body_care);
         loadShoppingItem("BodyCare");
     }
+    @BindView(R.id.chip_recommendations)
+    Chip chip_recommendations;
+    @OnClick(R.id.chip_recommendations)
+    void recommendationsChipClick() {
+        setSelectedChip(chip_recommendations);
+
+//        Load all items from DB to get their images
+        loadAllItems();
+//        Load CSV
+//        Pretend user has rated x items well
+//        MyShoppingItemAdapter adapter = new MyShoppingItemAdapter(getContext(), new );
+//        recycler_item.setAdapter(adapter);
+    }
 
     @BindView(R.id.recycler_items)
     RecyclerView recycler_item;
+
+    private void loadAllItems() {
+        Log.d(TAG, "loadAllItems: called!!");
+
+        List<ShoppingItem> shoppingItems = new ArrayList<>();
+        String[] items = {"Wax", "Spray", "HairSpray", "BodyCare"};
+        for (String itemMenu : items) {
+
+            mDialog.show();
+
+            shoppingItemRef = FirebaseFirestore.getInstance()
+                    .collection("Shopping")
+                    .document(itemMenu)
+                    .collection("Items");
+
+            // Get data
+            shoppingItemRef.get()
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            mDialog.dismiss();
+                            mIShoppingDataLoadListener.onShoppingDataLoadFailed(e.getMessage());
+                        }
+                    })
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot itemSnapshot : task.getResult()) {
+                                    ShoppingItem shoppingItem = itemSnapshot.toObject(ShoppingItem.class);
+                                    // Remember add it if you don't want to get null!!
+                                    shoppingItem.setId(itemSnapshot.getId());
+                                    shoppingItems.add(shoppingItem);
+                                }
+                                mIShoppingDataLoadListener.onShoppingDataLoadSuccess(shoppingItems);
+                                mDialog.dismiss();
+                            }
+                        }
+                    });
+        }
+    }
 
     private void loadShoppingItem(String itemMenu) {
         Log.d(TAG, "loadShoppingItem: called!!");
