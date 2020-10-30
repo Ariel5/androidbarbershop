@@ -7,6 +7,6 @@ import java.util.List;
 
 
 public interface IShoppingDataLoadListener {
-    void onShoppingDataLoadSuccess(List<ShoppingItem> shoppingItemList);
+    void onShoppingDataLoadSuccess(List<ShoppingItem> shoppingItemList, boolean isAllItems);
     void onShoppingDataLoadFailed(String message);
 }

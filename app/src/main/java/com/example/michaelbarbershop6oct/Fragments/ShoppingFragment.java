@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.michaelbarbershop6oct.Adapter.MyRecommendItemAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -86,7 +87,7 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
         setSelectedChip(chip_recommendations);
 
 //        Load all items from DB to get their images
-        loadAllItems();
+        loadAllRecommendItems();
 //        Load CSV
 //        Pretend user has rated x items well
 //        MyShoppingItemAdapter adapter = new MyShoppingItemAdapter(getContext(), new );
@@ -96,7 +97,7 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
     @BindView(R.id.recycler_items)
     RecyclerView recycler_item;
 
-    private void loadAllItems() {
+    private void loadAllRecommendItems() {
         Log.d(TAG, "loadAllItems: called!!");
 
         List<ShoppingItem> shoppingItems = new ArrayList<>();
@@ -129,7 +130,7 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
                                     shoppingItem.setId(itemSnapshot.getId());
                                     shoppingItems.add(shoppingItem);
                                 }
-                                mIShoppingDataLoadListener.onShoppingDataLoadSuccess(shoppingItems);
+                                mIShoppingDataLoadListener.onShoppingDataLoadSuccess(shoppingItems, true);
                                 mDialog.dismiss();
                             }
                         }
@@ -167,7 +168,7 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
                                 shoppingItem.setId(itemSnapshot.getId());
                                 shoppingItems.add(shoppingItem);
                             }
-                            mIShoppingDataLoadListener.onShoppingDataLoadSuccess(shoppingItems);
+                            mIShoppingDataLoadListener.onShoppingDataLoadSuccess(shoppingItems, false);
                             mDialog.dismiss();
                         }
                     }
@@ -232,10 +233,15 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
     }
 
     @Override
-    public void onShoppingDataLoadSuccess(List<ShoppingItem> shoppingItemList) {
+    public void onShoppingDataLoadSuccess(List<ShoppingItem> shoppingItemList, boolean isAllItems) {
         Log.d(TAG, "onShoppingDataLoadSuccess: called!!");
-        MyShoppingItemAdapter adapter = new MyShoppingItemAdapter(getContext(), shoppingItemList);
-        recycler_item.setAdapter(adapter);
+        if (isAllItems) {
+            MyRecommendItemAdapter adapter = new MyRecommendItemAdapter(getContext(), shoppingItemList);
+            recycler_item.setAdapter(adapter);
+        } else {
+            MyShoppingItemAdapter adapter = new MyShoppingItemAdapter(getContext(), shoppingItemList);
+            recycler_item.setAdapter(adapter);
+        }
     }
 
     @Override
