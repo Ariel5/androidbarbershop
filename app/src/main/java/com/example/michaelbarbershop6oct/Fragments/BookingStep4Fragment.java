@@ -213,7 +213,7 @@ public class BookingStep4Fragment extends Fragment implements ICartItemLoadLiten
         String endEventTime = calendarDateFormat.format(endEvent.getTime());
 
         addToDeviceCalendar(startEventTime, endEventTime, "Haircut Booking",
-                new StringBuilder("Hair cut from")
+                new StringBuilder("Haircut from ")
                         .append(startTime)
                         .append(" with ")
                         .append(Common.currentBarber.getName())
