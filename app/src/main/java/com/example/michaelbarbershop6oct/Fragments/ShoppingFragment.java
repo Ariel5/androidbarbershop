@@ -2,6 +2,7 @@ package com.example.michaelbarbershop6oct.Fragments;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +30,14 @@ import com.example.michaelbarbershop6oct.Common.SpaceItemDecoration;
 import com.example.michaelbarbershop6oct.Interface.IShoppingDataLoadListener;
 import com.example.michaelbarbershop6oct.Model.ShoppingItem;
 import com.example.michaelbarbershop6oct.R;
+import com.opencsv.CSVReader;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.List;
 
 import butterknife.BindView;
@@ -54,34 +61,43 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
     ChipGroup chipGroup;
     @BindView(R.id.chip_wax)
     Chip chip_wax;
+
     @OnClick(R.id.chip_wax)
     void waxChipClick() {
         setSelectedChip(chip_wax);
         loadShoppingItem("Wax");
     }
+
     @BindView(R.id.chip_spray)
     Chip chip_spray;
+
     @OnClick(R.id.chip_spray)
     void sprayChipClick() {
         setSelectedChip(chip_spray);
         loadShoppingItem("Spray");
     }
+
     @BindView(R.id.chip_hair_care)
     Chip chip_hair_care;
+
     @OnClick(R.id.chip_hair_care)
     void haireCareChipClick() {
         setSelectedChip(chip_hair_care);
         loadShoppingItem("HairSpray");
     }
+
     @BindView(R.id.chip_body_care)
     Chip chip_body_care;
+
     @OnClick(R.id.chip_body_care)
     void bodyCareChipClick() {
         setSelectedChip(chip_body_care);
         loadShoppingItem("BodyCare");
     }
+
     @BindView(R.id.chip_recommendations)
     Chip chip_recommendations;
+
     @OnClick(R.id.chip_recommendations)
     void recommendationsChipClick() {
         setSelectedChip(chip_recommendations);
@@ -89,6 +105,7 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
 //        Load all items from DB to get their images
         loadAllRecommendItems();
 //        Load CSV
+        getRatingsForProducts();
 //        Pretend user has rated x items well
 //        MyShoppingItemAdapter adapter = new MyShoppingItemAdapter(getContext(), new );
 //        recycler_item.setAdapter(adapter);
@@ -138,6 +155,32 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
         }
     }
 
+    private void getRatingsForProducts() {
+        List<String[]> lines = null;
+        try {
+            CSVReader reader = new CSVReader(new InputStreamReader(getActivity().getAssets().open("mock-dataset.csv"), StandardCharsets.UTF_8));
+            lines = reader.readAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getContext(), "The Recommender dataset CSV was not found", Toast.LENGTH_SHORT).show();
+//            return null;
+        }
+
+        String[] ids = lines.get(0);
+        List<String[]> ratings_list = lines.subList(1, lines.size());
+        float[][] ratings = new float[ratings_list.size()][ratings_list.get(0).length];
+
+        for (int i = 0; i < ratings_list.size(); i++) {
+            for (int j = 0; j < ratings_list.get(i).length; j++) {
+                ratings[i][j] = Float.parseFloat(ratings_list.get(i)[j]);
+            }
+        }
+
+        Log.d(TAG, "CSV line count: " + ratings.length);
+
+//            return
+    }
+
     private void loadShoppingItem(String itemMenu) {
         Log.d(TAG, "loadShoppingItem: called!!");
 
@@ -179,10 +222,10 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
         Log.d(TAG, "setSelectedChip: called!!");
 
         // Set color
-        for (int i=0; i<chipGroup.getChildCount(); i++) {
+        for (int i = 0; i < chipGroup.getChildCount(); i++) {
             Chip chipItem = (Chip) chipGroup.getChildAt(i);
-            Log.d(TAG, "setSelectedChip: chip.getId(): "+chip.getId());
-            Log.d(TAG, "setSelectedChip: chipItem.getId(): "+chipItem.getId());
+            Log.d(TAG, "setSelectedChip: chip.getId(): " + chip.getId());
+            Log.d(TAG, "setSelectedChip: chipItem.getId(): " + chipItem.getId());
             // If not selected
             if (chipItem.getId() != chip.getId()) {
                 chipItem.setChipBackgroundColorResource(android.R.color.darker_gray);
@@ -211,7 +254,7 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_shopping, container, false);
+        View view = inflater.inflate(R.layout.fragment_shopping, container, false);
 
         mUnbinder = ButterKnife.bind(this, view);
         mIShoppingDataLoadListener = this;

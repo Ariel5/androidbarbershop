@@ -3,6 +3,7 @@ package com.example.michaelbarbershop6oct.Model;
 public class ShoppingItem {
     private String id, name, image;
     private Long price;
+    private float rating;
 
     public ShoppingItem() {
     }
@@ -37,5 +38,13 @@ public class ShoppingItem {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 }
