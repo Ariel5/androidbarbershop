@@ -53,7 +53,7 @@ public class MyRecommendItemAdapter extends RecyclerView.Adapter<MyRecommendItem
 
         holder.txt_name_recommend_item.setText(
                 Common.formatShoppingItemName(mShoppingItemList.get(position).getName()));
-        holder.txt_rating_number_recommend_item.setText("gimi");
+//        holder.txt_rating_number_recommend_item.setText((int) mShoppingItemList.get(position).getRating());
     }
 
     @Override

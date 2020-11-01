@@ -2,7 +2,6 @@ package com.example.michaelbarbershop6oct.Fragments;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,12 +31,10 @@ import com.example.michaelbarbershop6oct.Model.ShoppingItem;
 import com.example.michaelbarbershop6oct.R;
 import com.opencsv.CSVReader;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 import butterknife.BindView;
@@ -104,8 +101,6 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
 
 //        Load all items from DB to get their images
         loadAllRecommendItems();
-//        Load CSV
-        getRatingsForProducts();
 //        Pretend user has rated x items well
 //        MyShoppingItemAdapter adapter = new MyShoppingItemAdapter(getContext(), new );
 //        recycler_item.setAdapter(adapter);
@@ -116,6 +111,9 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
 
     private void loadAllRecommendItems() {
         Log.d(TAG, "loadAllItems: called!!");
+
+        //        Load CSV
+        Hashtable<String, Float> productRatings = getRatingsForProducts();
 
         List<ShoppingItem> shoppingItems = new ArrayList<>();
         String[] items = {"Wax", "Spray", "HairSpray", "BodyCare"};
@@ -145,6 +143,8 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
                                     ShoppingItem shoppingItem = itemSnapshot.toObject(ShoppingItem.class);
                                     // Remember add it if you don't want to get null!!
                                     shoppingItem.setId(itemSnapshot.getId());
+//                                    float rating =
+                                    shoppingItem.setRating(productRatings.get(itemSnapshot.getId()));
                                     shoppingItems.add(shoppingItem);
                                 }
                                 mIShoppingDataLoadListener.onShoppingDataLoadSuccess(shoppingItems, true);
@@ -155,10 +155,10 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
         }
     }
 
-    private void getRatingsForProducts() {
+    private Hashtable<String, Float> getRatingsForProducts() {
         List<String[]> lines = null;
         try {
-            CSVReader reader = new CSVReader(new InputStreamReader(getActivity().getAssets().open("mock-dataset.csv"), StandardCharsets.UTF_8));
+            CSVReader reader = new CSVReader(new InputStreamReader(getActivity().getAssets().open("mock-dataset.csv"), StandardCharsets.US_ASCII));
             lines = reader.readAll();
         } catch (Exception e) {
             e.printStackTrace();
@@ -169,16 +169,25 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
         String[] ids = lines.get(0);
         List<String[]> ratings_list = lines.subList(1, lines.size());
         float[][] ratings = new float[ratings_list.size()][ratings_list.get(0).length];
+        float[] column_sums = new float[ratings_list.get(0).length];
 
         for (int i = 0; i < ratings_list.size(); i++) {
             for (int j = 0; j < ratings_list.get(i).length; j++) {
                 ratings[i][j] = Float.parseFloat(ratings_list.get(i)[j]);
+                column_sums[j] += ratings[i][j];
             }
         }
 
         Log.d(TAG, "CSV line count: " + ratings.length);
 
-//            return
+        Hashtable<String, Float> id_ratings = new Hashtable<>();
+
+        for (int k = 0; k < column_sums.length; k++) {
+            column_sums[k] /= ratings_list.size();
+            id_ratings.put(ids[k], column_sums[k]);
+        }
+
+        return id_ratings;
     }
 
     private void loadShoppingItem(String itemMenu) {
