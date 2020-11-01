@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -58,10 +59,13 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
     ChipGroup chipGroup;
     @BindView(R.id.chip_wax)
     Chip chip_wax;
+    @BindView(R.id.recommend_description)
+    TextView recommend_description;
 
     @OnClick(R.id.chip_wax)
     void waxChipClick() {
         setSelectedChip(chip_wax);
+        recommend_description.setVisibility(View.GONE);
         loadShoppingItem("Wax");
     }
 
@@ -71,6 +75,7 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
     @OnClick(R.id.chip_spray)
     void sprayChipClick() {
         setSelectedChip(chip_spray);
+        recommend_description.setVisibility(View.GONE);
         loadShoppingItem("Spray");
     }
 
@@ -80,6 +85,7 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
     @OnClick(R.id.chip_hair_care)
     void haireCareChipClick() {
         setSelectedChip(chip_hair_care);
+        recommend_description.setVisibility(View.GONE);
         loadShoppingItem("HairSpray");
     }
 
@@ -89,6 +95,7 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
     @OnClick(R.id.chip_body_care)
     void bodyCareChipClick() {
         setSelectedChip(chip_body_care);
+        recommend_description.setVisibility(View.GONE);
         loadShoppingItem("BodyCare");
     }
 
@@ -98,8 +105,9 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
     @OnClick(R.id.chip_recommendations)
     void recommendationsChipClick() {
         setSelectedChip(chip_recommendations);
-        mIShoppingDataLoadListener.onShoppingDataLoadSuccess(shoppingItems, true);
+        recommend_description.setVisibility(View.VISIBLE);
         HashMap<ShoppingItem, Double> currentUserRecommendations = SlopeOne.slopeOne(15, shoppingItems);
+        mIShoppingDataLoadListener.onShoppingDataLoadSuccess(shoppingItems, currentUserRecommendations);
     }
 
     @BindView(R.id.recycler_items)
@@ -177,7 +185,7 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
                                 shoppingItem.setId(itemSnapshot.getId());
                                 shoppingItems.add(shoppingItem);
                             }
-                            mIShoppingDataLoadListener.onShoppingDataLoadSuccess(shoppingItems, false);
+                            mIShoppingDataLoadListener.onShoppingDataLoadSuccess(shoppingItems, null);
                             mDialog.dismiss();
                         }
                     }
@@ -244,10 +252,10 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
     }
 
     @Override
-    public void onShoppingDataLoadSuccess(List<ShoppingItem> shoppingItemList, boolean isAllItems) {
+    public void onShoppingDataLoadSuccess(List<ShoppingItem> shoppingItemList, HashMap<ShoppingItem, Double> currentUserRecommendations) {
         Log.d(TAG, "onShoppingDataLoadSuccess: called!!");
-        if (isAllItems) {
-            MyRecommendItemAdapter adapter = new MyRecommendItemAdapter(getContext(), shoppingItemList);
+        if (currentUserRecommendations != null) {
+            MyRecommendItemAdapter adapter = new MyRecommendItemAdapter(getContext(), shoppingItemList, currentUserRecommendations);
             recycler_item.setAdapter(adapter);
         } else {
             MyShoppingItemAdapter adapter = new MyShoppingItemAdapter(getContext(), shoppingItemList);

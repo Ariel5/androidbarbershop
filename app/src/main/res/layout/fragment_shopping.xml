@@ -75,6 +75,16 @@
 
     </com.google.android.material.chip.ChipGroup>
 
+
+    <TextView
+        android:id="@+id/recommend_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="Based on your ratings, we predict you'll like these products:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:visibility="gone" />
+
     <View
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"

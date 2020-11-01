@@ -6,20 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.michaelbarbershop6oct.Common.Common;
 import com.example.michaelbarbershop6oct.Database.CartDatabase;
-import com.example.michaelbarbershop6oct.Database.CartItem;
-import com.example.michaelbarbershop6oct.Database.DatabaseUtils;
 import com.example.michaelbarbershop6oct.Interface.IRecyclerItemSelectedListener;
 import com.example.michaelbarbershop6oct.Model.ShoppingItem;
 import com.example.michaelbarbershop6oct.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -33,10 +31,13 @@ public class MyRecommendItemAdapter extends RecyclerView.Adapter<MyRecommendItem
 
     private CartDatabase mCartDatabase;
 
-    public MyRecommendItemAdapter(Context context, List<ShoppingItem> shoppingItemList) {
+    HashMap<ShoppingItem, Double> currentUserRecommendations;
+
+    public MyRecommendItemAdapter(Context context, List<ShoppingItem> shoppingItemList, HashMap<ShoppingItem, Double> currentUserRecommendations) {
         mContext = context;
         mShoppingItemList = shoppingItemList;
         mCartDatabase = CartDatabase.getInstance(context);
+        this.currentUserRecommendations = currentUserRecommendations;
     }
 
     @NonNull
@@ -53,7 +54,7 @@ public class MyRecommendItemAdapter extends RecyclerView.Adapter<MyRecommendItem
 
         holder.txt_name_recommend_item.setText(
                 Common.formatShoppingItemName(mShoppingItemList.get(position).getName()));
-//        holder.txt_rating_number_recommend_item.setText((int) mShoppingItemList.get(position).getRating());
+        holder.txt_rating_number_recommend_item.setText(String.format("%.2f", currentUserRecommendations.get(mShoppingItemList.get(position))));
     }
 
     @Override
