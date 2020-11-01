@@ -15,6 +15,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.michaelbarbershop6oct.Adapter.MyRecommendItemAdapter;
+import com.example.michaelbarbershop6oct.Adapter.MyShoppingItemAdapter;
+import com.example.michaelbarbershop6oct.Common.SpaceItemDecoration;
+import com.example.michaelbarbershop6oct.Interface.IShoppingDataLoadListener;
+import com.example.michaelbarbershop6oct.Model.ShoppingItem;
+import com.example.michaelbarbershop6oct.R;
 import com.example.michaelbarbershop6oct.Service.SlopeOne.SlopeOne;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,17 +30,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.example.michaelbarbershop6oct.Adapter.MyShoppingItemAdapter;
-import com.example.michaelbarbershop6oct.Common.SpaceItemDecoration;
-import com.example.michaelbarbershop6oct.Interface.IShoppingDataLoadListener;
-import com.example.michaelbarbershop6oct.Model.ShoppingItem;
-import com.example.michaelbarbershop6oct.R;
-import com.opencsv.CSVReader;
 
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -102,7 +99,7 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
     void recommendationsChipClick() {
         setSelectedChip(chip_recommendations);
         mIShoppingDataLoadListener.onShoppingDataLoadSuccess(shoppingItems, true);
-        SlopeOne.slopeOne(30, shoppingItems);
+        HashMap<ShoppingItem, Double> currentUserRecommendations = SlopeOne.slopeOne(15, shoppingItems);
     }
 
     @BindView(R.id.recycler_items)

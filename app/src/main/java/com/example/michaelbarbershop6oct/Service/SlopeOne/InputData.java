@@ -23,8 +23,8 @@ public class InputData {
         for (int i = 0; i < numberOfUsers; i++) {
             newUser = new HashMap<ShoppingItem, Double>();
             newRecommendationSet = new HashSet<>();
-            for (int j = 0; j < 3; j++) {
-                newRecommendationSet.add(items.get((int) (Math.random() * 5)));
+            for (int j = 0; j < 20; j++) {
+                newRecommendationSet.add(items.get((int) (Math.random() * 28)));
             }
             for (ShoppingItem item : newRecommendationSet) {
                 newUser.put(item, Math.random());

@@ -4,6 +4,7 @@ import com.example.michaelbarbershop6oct.Model.ShoppingItem;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,17 +15,27 @@ import java.util.Map.Entry;
  */
 public class SlopeOne {
 
+    // Correlations between products based on their ratings
     private static Map<ShoppingItem, Map<ShoppingItem, Double>> diff = new HashMap<>();
     private static Map<ShoppingItem, Map<ShoppingItem, Integer>> freq = new HashMap<>();
     private static Map<User, HashMap<ShoppingItem, Double>> inputData;
-    private static Map<User, HashMap<ShoppingItem, Double>> outputData = new HashMap<>();
+    private static ArrayList<HashMap<ShoppingItem, Double>> outputData = new ArrayList<>();
 
-    public static void slopeOne(int numberOfUsers, List<ShoppingItem> shoppingItems) {
-        inputData = new InputData(shoppingItems).initializeData(numberOfUsers);
+    public static HashMap<ShoppingItem, Double> slopeOne(int numberOfUsers, List<ShoppingItem> shoppingItems) {
+//        Generate random rating data. Pretend this is how other users rated our products
+        InputData inputDataObject = new InputData(shoppingItems);
+        inputData = inputDataObject.initializeData(numberOfUsers);
         System.out.println("Slope One - Before the Prediction\n");
         buildDifferencesMatrix(inputData);
+
+//        Add new user's ratings. We need to predict this one. Pretend this is the current user
+//        Collection<HashMap<ShoppingItem, Double>> currentUser = inputDataObject.initializeData(1).values();
+
+//        inputData.
+
         System.out.println("\nSlope One - With Predictions\n");
-        predict(inputData);
+        outputData = predict(inputData);
+        return outputData.get(outputData.size()-1);
     }
 
     /**
@@ -69,25 +80,26 @@ public class SlopeOne {
     /**
      * Based on existing data predict all missing ratings. If prediction is not
      * possible, the value will be equal to -1
-     * 
-     * @param data
+     *
+     * @param allUsersProductsRatings
      *            existing user data and their ShoppingItems' ratings
+     * @return
      */
-    private static void predict(Map<User, HashMap<ShoppingItem, Double>> data) {
+    private static ArrayList<HashMap<ShoppingItem, Double>> predict(Map<User, HashMap<ShoppingItem, Double>> allUsersProductsRatings) {
         HashMap<ShoppingItem, Double> uPred = new HashMap<ShoppingItem, Double>();
         HashMap<ShoppingItem, Integer> uFreq = new HashMap<ShoppingItem, Integer>();
         for (ShoppingItem j : diff.keySet()) {
             uFreq.put(j, 0);
             uPred.put(j, 0.0);
         }
-        for (Entry<User, HashMap<ShoppingItem, Double>> inputDataItem : data.entrySet()) {
-            for (ShoppingItem j : inputDataItem.getValue().keySet()) {
+        for (Entry<User, HashMap<ShoppingItem, Double>> singleUserProductsRatings : allUsersProductsRatings.entrySet()) {
+            for (ShoppingItem oneProductRating : singleUserProductsRatings.getValue().keySet()) {
                 for (ShoppingItem k : diff.keySet()) {
                     try {
-                        double predictedValue = diff.get(k).get(j).doubleValue() + inputDataItem.getValue().get(j).doubleValue();
-                        double finalValue = predictedValue * freq.get(k).get(j).intValue();
+                        double predictedValue = diff.get(k).get(oneProductRating).doubleValue() + singleUserProductsRatings.getValue().get(oneProductRating).doubleValue();
+                        double finalValue = predictedValue * freq.get(k).get(oneProductRating).intValue();
                         uPred.put(k, uPred.get(k) + finalValue);
-                        uFreq.put(k, uFreq.get(k) + freq.get(k).get(j).intValue());
+                        uFreq.put(k, uFreq.get(k) + freq.get(k).get(oneProductRating).intValue());
                     } catch (NullPointerException e1) {
                     }
                 }
@@ -99,15 +111,15 @@ public class SlopeOne {
                 }
             }
             for (ShoppingItem j : InputData.items) {
-                if (inputDataItem.getValue().containsKey(j)) {
-                    clean.put(j, inputDataItem.getValue().get(j));
+                if (singleUserProductsRatings.getValue().containsKey(j)) {
+                    clean.put(j, singleUserProductsRatings.getValue().get(j));
                 } else if (!clean.containsKey(j)) {
                     clean.put(j, -1.0);
                 }
             }
-            outputData.put(inputDataItem.getKey(), clean);
+            outputData.add(clean);
         }
-        printData(outputData);
+        return outputData;
     }
 
     private static void printData(Map<User, HashMap<ShoppingItem, Double>> data) {
