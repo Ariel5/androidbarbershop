@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.michaelbarbershop6oct.Adapter.MyRecommendItemAdapter;
+import com.example.michaelbarbershop6oct.Service.SlopeOne.SlopeOne;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -53,6 +54,8 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
     private IShoppingDataLoadListener mIShoppingDataLoadListener;
 
     private AlertDialog mDialog;
+
+    private List<ShoppingItem> shoppingItems = new ArrayList<>();
 
     @BindView(R.id.chip_group)
     ChipGroup chipGroup;
@@ -98,24 +101,16 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
     @OnClick(R.id.chip_recommendations)
     void recommendationsChipClick() {
         setSelectedChip(chip_recommendations);
-
-//        Load all items from DB to get their images
-        loadAllRecommendItems();
-//        Pretend user has rated x items well
-//        MyShoppingItemAdapter adapter = new MyShoppingItemAdapter(getContext(), new );
-//        recycler_item.setAdapter(adapter);
+        mIShoppingDataLoadListener.onShoppingDataLoadSuccess(shoppingItems, true);
+        SlopeOne.slopeOne(30, shoppingItems);
     }
 
     @BindView(R.id.recycler_items)
     RecyclerView recycler_item;
 
-    private void loadAllRecommendItems() {
+    private void loadAllItems() {
         Log.d(TAG, "loadAllItems: called!!");
 
-        //        Load CSV
-        Hashtable<String, Float> productRatings = getRatingsForProducts();
-
-        List<ShoppingItem> shoppingItems = new ArrayList<>();
         String[] items = {"Wax", "Spray", "HairSpray", "BodyCare"};
         for (String itemMenu : items) {
 
@@ -144,50 +139,15 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
                                     // Remember add it if you don't want to get null!!
                                     shoppingItem.setId(itemSnapshot.getId());
 //                                    float rating =
-                                    shoppingItem.setRating(productRatings.get(itemSnapshot.getId()));
+//                                    shoppingItem.setRating(productRatings.get(itemSnapshot.getId()));
                                     shoppingItems.add(shoppingItem);
                                 }
-                                mIShoppingDataLoadListener.onShoppingDataLoadSuccess(shoppingItems, true);
+//                                mIShoppingDataLoadListener.onShoppingDataLoadSuccess(shoppingItems, true);
                                 mDialog.dismiss();
                             }
                         }
                     });
         }
-    }
-
-    private Hashtable<String, Float> getRatingsForProducts() {
-        List<String[]> lines = null;
-        try {
-            CSVReader reader = new CSVReader(new InputStreamReader(getActivity().getAssets().open("mock-dataset.csv"), StandardCharsets.US_ASCII));
-            lines = reader.readAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(getContext(), "The Recommender dataset CSV was not found", Toast.LENGTH_SHORT).show();
-//            return null;
-        }
-
-        String[] ids = lines.get(0);
-        List<String[]> ratings_list = lines.subList(1, lines.size());
-        float[][] ratings = new float[ratings_list.size()][ratings_list.get(0).length];
-        float[] column_sums = new float[ratings_list.get(0).length];
-
-        for (int i = 0; i < ratings_list.size(); i++) {
-            for (int j = 0; j < ratings_list.get(i).length; j++) {
-                ratings[i][j] = Float.parseFloat(ratings_list.get(i)[j]);
-                column_sums[j] += ratings[i][j];
-            }
-        }
-
-        Log.d(TAG, "CSV line count: " + ratings.length);
-
-        Hashtable<String, Float> id_ratings = new Hashtable<>();
-
-        for (int k = 0; k < column_sums.length; k++) {
-            column_sums[k] /= ratings_list.size();
-            id_ratings.put(ids[k], column_sums[k]);
-        }
-
-        return id_ratings;
     }
 
     private void loadShoppingItem(String itemMenu) {
@@ -257,6 +217,8 @@ public class ShoppingFragment extends Fragment implements IShoppingDataLoadListe
         super.onCreate(savedInstanceState);
 
         mDialog = new SpotsDialog.Builder().setContext(getContext()).setCancelable(false).build();
+
+        loadAllItems();
     }
 
     @Override
